@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { useHistory } from 'react-router-dom';
+
+
 
 const initialAnimal = {
     name: '',
@@ -6,10 +10,11 @@ const initialAnimal = {
     classification: { species:'' }
 }
 
-export default function AnimalForm({animals, updateAnimals }) {
+export default function AnimalForm({animals, updateAnimals, setDependency }) {
 
     const [ updating, setUpdating ] = useState(false);
     const [animalToUpdate, setAnimalToUpdate] = useState(initialAnimal);
+    const history = useHistory();
 
     const editAnimal = animal => {
         setUpdating(true);
@@ -21,10 +26,24 @@ export default function AnimalForm({animals, updateAnimals }) {
         // How can we update the animal information?
         // Where can we get the ID? 
         // Where is the information stored?
+        axiosWithAuth()
+            .put(`animals/${animalToUpdate.id}`, animalToUpdate)
+            .then(res => {
+                console.log(res);
+                setDependency(true);                    
+            })
+            .catch(err => console.log('error updating', err))
     }
 
     const deleteAnimal = animal => {
         // How can we delete an animal?
+        axiosWithAuth()
+            .delete(`animals/${animalToUpdate.id}`, animal)
+            .then(res => {
+                console.log(res.data)
+            })
+            .catch(err => console.log(err))
+
     }
 
     return (

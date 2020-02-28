@@ -26,7 +26,7 @@ export default function Login(props) {
             .then(res => {
                 console.log('res login',res)
                 window.localStorage.setItem('token', res.data.payload)
-                history.push('/')
+                history.push('/creatures')
             })
             .catch(err => console.log('error login in', err))
     }
